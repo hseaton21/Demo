@@ -1,0 +1,10 @@
+TITLE = "jumpy"
+#Dimensions
+WIDTH = 480
+HEIGHT = 600
+#FPS
+FPS = 30
+#COLORS
+WHITE = (255,255,255)
+BLACK = (0,0,0)
+GREENISH = (109,54,120)
