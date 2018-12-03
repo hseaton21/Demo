@@ -5,8 +5,8 @@ PLAYER_ACC = 0.8
 PLAYER_FRIC = -0.12
 PLAYER_GRAV = 1.3
 #Dimensions
-WIDTH = 480
-HEIGHT = 600
+WIDTH = 1000
+HEIGHT = 800
 #FPS
 FPS = 60
 #COLORS
@@ -16,9 +16,12 @@ GREENISH = (109,54,120)
 GREEN = (66, 244, 113)
 PINK = (255, 102, 232)
 BLACK = (0,0,0)
+MEMES = (69,69,69)
 #Platforms
-PLAT_LIST = [(0, HEIGHT - 40, WIDTH, 40), 
-            (WIDTH / 2 - 50, HEIGHT * 3/4, 100, 20),
-            (400,320,100,20),
-            (0,320,100,20),
-            (WIDTH / 2,HEIGHT *3/8, 100, 20)]
+STAGE_1 = [(125, HEIGHT - 40, 750, 40), 
+            (450, 500, 100, 20),
+            (250,625,100,20),
+            (625,625,100,20)]
+STAGE_2 = [(125, HEIGHT - 100, 750, 100)]
+STAGE_3 = [(125, HEIGHT - 100, 750, 100),
+(625,625,130,20)]
