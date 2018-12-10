@@ -58,15 +58,19 @@ class Game:
         self.all_sprites.update()
         #Collisions
         if self.player.vel.y > 0:
-            hits = pg.sprite.spritecollide(self.player, self.platforms, False)
-            if hits: 
-                self.player.pos.y = hits[0].rect.top + 1
+            hits1_g = pg.sprite.spritecollide(self.player, self.platforms, False)
+            if hits1_g: 
+                self.player.pos.y = hits1_g[0].rect.top + 1
                 self.player.vel.y = 0
         if self.player2.vel.y > 0:
-            hits2 = pg.sprite.spritecollide(self.player2, self.platforms, False)
-            if hits2: 
-                self.player2.pos.y = hits2[0].rect.top + 1
+            hits2_g = pg.sprite.spritecollide(self.player2, self.platforms, False)
+            if hits2_g: 
+                self.player2.pos.y = hits2_g[0].rect.top + 1
                 self.player2.vel.y = 0
+        # hits2_p = pg.sprite.spritecollideany(self.player2, self.all_sprites, False)
+        # if hits2_p: 
+        #     print(hits2_p)
+        #     self.player2.vel.x = hits2_p.vel.x
         #Temp, Scrolling the screen up.
         if self.player.rect.bottom >= 825:
             self.player.pos.x = WIDTH / 2

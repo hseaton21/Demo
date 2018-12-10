@@ -110,7 +110,7 @@ class Player(Sprite):
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT]:
             self.acc.x = -PLAYER_ACC
-            self.player_img = pg.image.load(path.join(img, "Player1Standing.gif")).convert()
+            self.player_img = pg.image.load(path.join(img, "Player1Left.gif")).convert()
         if keys[pg.K_RIGHT]:
             self.acc.x = PLAYER_ACC
             self.player_img = pg.image.load(path.join(img, "Player1Left.gif")).convert()
