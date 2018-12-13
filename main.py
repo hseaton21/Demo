@@ -1,87 +1,80 @@
-#This Post Was made By Harrison Seaton
-#Thanks to Chris and Priya Bradfield\Heavely Inspired by KidsCanCode.
+# This file was created by Mikey DiIorio
+# Thanks to Chris Bradfield for the "Kids Can Code" Series
+
 import pygame as pg
-from settings import *
 import random
+from settings import *
 from sprites import *
-from os import path
+from time import *
 
 class Game:
-    def __init__(self):
-         #init game window,try:
+    def __init__(self): 
+        #-Game window
+        #Init pygame and create...
         pg.init()
         pg.mixer.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
-        pg.display.set_caption("Oingo Boingo Bros")
+        pg.display.set_caption("Enigma")
         self.clock = pg.time.Clock()
         self.running = True
-        self.background = pg.image.load(path.join(img, "bazonk.jpg")).convert()
+        self.background = pg.image.load(path.join(img, "gum.gif"))
         self.background_rect = self.background.get_rect()
-        self.p1lives = 3
-        self.p2lives = 3
-        #init pygame and create...
     def new(self):
-        #Create new player object
         self.all_sprites = pg.sprite.Group()
-        self.platforms = pg.sprite.Group()
+        self.team_1 = pg.sprite.Group()
+        self.team_2 = pg.sprite.Group()
+        self.platforms = pg.sprite. Group()
+        # Player 1
         self.player = Player(self)
-        self.player2 = Player2(self)
-        self.all_sprites.add(self.player2)
         self.all_sprites.add(self.player)
-        self.stage_select = input("Gimme a stage, choose 1, 2, or 3: ")
-        if self.stage_select == "1":
-            for plat in STAGE_1:
-                p = Platform(*plat)
-                self.all_sprites.add(p)
-                self.platforms.add(p)
-        if self.stage_select == "2":
-            for plat in STAGE_2:
-                p = Platform(*plat)
-                self.all_sprites.add(p)
-                self.platforms.add(p)
-        if self.stage_select == "3":
-            for plat in STAGE_3:
-                p2 = Platform2(*plat)
-                self.all_sprites.add(p2)
-                self.platforms.add(p2)
+        self.team_1.add(self.player)
+        # Player 2
+        self.player_2 = Player(self)
+        self.player_2.image.fill(WHITE)
+        self.player_2.up = pg.K_w
+        self.player_2.left = pg.K_a
+        self.player_2.right = pg.K_d
+        self.all_sprites.add(self.player_2)
+        self.team_2.add(self.player_2)
+        # Platforms
+        for plat in PLAT_LIST:
+            p = Platform(*plat)
+            self.all_sprites.add(p)
+            self.platforms.add(p)
         self.run()
+        #Create new player
+        pass
     def run(self):
-        #game loop
         self.playing = True
-        while self.playing:
+        #Game loop
+        while self.playing: 
             self.clock.tick(FPS)
             self.events()
             self.update()
             self.draw()
-    def update(self): 
-        #update things
+        pass
+    def update(self):
+        #Collision code
         self.all_sprites.update()
-        #Collisions
-        if self.player.vel.y > 0:
-            hits1_g = pg.sprite.spritecollide(self.player, self.platforms, False)
-            if hits1_g: 
-                self.player.pos.y = hits1_g[0].rect.top + 1
-                self.player.vel.y = 0
-        if self.player2.vel.y > 0:
-            hits2_g = pg.sprite.spritecollide(self.player2, self.platforms, False)
-            if hits2_g: 
-                self.player2.pos.y = hits2_g[0].rect.top + 1
-                self.player2.vel.y = 0
-        # hits2_p = pg.sprite.spritecollideany(self.player2, self.all_sprites, False)
-        # if hits2_p: 
-        #     print(hits2_p)
-        #     self.player2.vel.x = hits2_p.vel.x
-        #Temp, Scrolling the screen up.
-        if self.player.rect.bottom >= 825:
-            self.player.pos.x = WIDTH / 2
-            self.player.pos.y = HEIGHT / 2
-            self.p1lives = self.p1lives - 1
-            print(str(self.p1lives))
-        if self.player2.rect.bottom >= 825:
-            self.player2.pos.x = WIDTH / 2
-            self.player2.pos.y = HEIGHT / 2
-            self.p2lives = self.p2lives - 1
-            print(str(self.p2lives))
+        hits_1 = pg.sprite.spritecollide(self.player, self.platforms, False)
+        hits_2 = pg.sprite.spritecollide(self.player_2, self.platforms, False)
+        pcollide = pg.sprite.spritecollideany(self.player, self.team_2)
+        if hits_1 and self.player.vel.y >= 0:
+            self.player.pos.y = hits_1[0].rect.top + 1
+            self.player.vel.y = 0
+        if self.player.rect.bottom > HEIGHT:
+            self.playing = False
+
+        if hits_2 and self.player_2.vel.y >= 0:
+            self.player_2.pos.y = hits_2[0].rect.top + 1
+            self.player_2.vel.y = 0
+        if self.player_2.rect.bottom > HEIGHT:
+            self.playing = False
+        
+        if pcollide:
+            print(pcollide)
+
+        #Update game
     def events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -89,28 +82,29 @@ class Game:
                     self.playing = False
                 self.running = False
             if event.type == pg.KEYDOWN:
-                if event.key == pg.K_UP:
+                if event.key == self.player.up:
                     self.player.jump()
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_w:
-                    self.player2.jump()
-            self.player.dash()
-            self.player2.dash()
+                if event.key == self.player_2.up:
+                    self.player_2.jump()
     def draw(self):
         self.screen.fill(BLACK)
         self.screen.blit(self.background, self.background_rect)
         self.all_sprites.draw(self.screen)
-        #double buffer
+        #Double Buffer
         pg.display.flip()
-
+        #Draw character (and others)
+        pass
     def show_start_screen(self):
+        #Show the start screen
         pass
     def show_go_screen(self):
+        #Show the go screen
         pass
 
 g = Game()
 g.show_start_screen()
-while g.running:
+while g.running: 
     g.new()
-    g.show_go_screen
- 
+    g.show_go_screen()
+
+pg.quit()

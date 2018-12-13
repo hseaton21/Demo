@@ -1,27 +1,27 @@
-#Thanks to Chris and Priya Bradfield\Heavely Inspired by KidsCanCode.
-TITLE = "Oingo Boingo Bros"
-#Player
-PLAYER_ACC = 0.8
-PLAYER_FRIC = -0.12
-PLAYER_GRAV = 1.3
-#Dimensions
-WIDTH = 1000
-HEIGHT = 800
-#FPS
+TITLE = "Epic Tag" 
+# Screen Dimensions 
+WIDTH = 1370 
+HEIGHT = 840 
+# Frames Per Second 
 FPS = 60
-#COLORS
-WHITE = (255,255,255)
-BLACK = (0,0,0)
-GREENISH = (109,54,120)
-GREEN = (66, 244, 113)
-PINK = (255, 102, 232)
-BLACK = (0,0,0)
-MEMES = (69,69,69)
-#Platforms
-STAGE_1 = [(125, HEIGHT - 40, 750, 40), 
-            (450, 500, 100, 20),
-            (250,625,100,20),
-            (625,625,100,20)]
-STAGE_2 = [(125, HEIGHT - 100, 750, 100)]
-STAGE_3 = [(125, HEIGHT - 100, 750, 100),
-(625,625,130,20)]
+# Colors 
+WHITE = (255, 255, 255) 
+BLACK = (0, 0, 0) 
+REDDISH = (240, 55, 66) 
+THANOS = (109, 54, 120) 
+
+# Movement
+p_acc = 0.5
+p_fric = -0.05 
+p_grav = 0.8
+
+#Platybois
+
+# 1, ; 2, ; 3, midleft; 4, midright;
+
+PLAT_LIST = [(225,750,200,2),
+             (-625,550,200,2),
+             (-625,100,200,2),
+             (1000,100,200,2),
+             (1000,550,200,2),
+             (225,300,200,2)]
