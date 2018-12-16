@@ -18,8 +18,9 @@ class Player(pg.sprite.Sprite):
         self.image = pg.Surface((40,40))
         self.image.fill(THANOS)
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH / 2, HEIGHT / 2)
-        self.pos = vec(WIDTH / 3, HEIGHT / 2)
+        self.startpos = (WIDTH / 3, HEIGHT / 2)
+        self.rect.center = self.startpos
+        self.pos = vec(self.startpos)
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
         self.left = pg.K_LEFT

@@ -10,6 +10,7 @@ BLACK = (0, 0, 0)
 REDDISH = (240, 55, 66) 
 THANOS = (109, 54, 120) 
 
+
 # Movement
 p_acc = 0.5
 p_fric = -0.05 

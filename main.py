@@ -5,7 +5,7 @@ import pygame as pg
 import random
 from settings import *
 from sprites import *
-from time import *
+import time
 
 class Game:
     def __init__(self): 
@@ -31,17 +31,25 @@ class Game:
         # Player 2
         self.player_2 = Player(self)
         self.player_2.image.fill(WHITE)
+        self.player_2.startpos = (2 * WIDTH / 3, HEIGHT / 2)
         self.player_2.up = pg.K_w
         self.player_2.left = pg.K_a
         self.player_2.right = pg.K_d
         self.all_sprites.add(self.player_2)
         self.team_2.add(self.player_2)
+        self.oneoff = 0
+        self.ntt = 5
+        self.start = time.time()
+        self.tag1 = False
+        self.tag2 = True
+        while self.ntt > 0:
+            self.ntt = self.ntt - 1
         # Platforms
         for plat in PLAT_LIST:
             p = Platform(*plat)
             self.all_sprites.add(p)
             self.platforms.add(p)
-        self.run()
+        self.run()  
         #Create new player
         pass
     def run(self):
@@ -52,9 +60,14 @@ class Game:
             self.events()
             self.update()
             self.draw()
-        pass
     def update(self):
-        #Collision code
+        while self.oneoff == 0:
+            self.player_2.pos = self.player_2.startpos
+            self.player_2.vel = vec(0,0)
+            self.player.pos = self.player.startpos
+            self.player.vel = vec(0,0)
+            self.oneoff = self.oneoff + 1
+
         self.all_sprites.update()
         hits_1 = pg.sprite.spritecollide(self.player, self.platforms, False)
         hits_2 = pg.sprite.spritecollide(self.player_2, self.platforms, False)
@@ -63,18 +76,45 @@ class Game:
             self.player.pos.y = hits_1[0].rect.top + 1
             self.player.vel.y = 0
         if self.player.rect.bottom > HEIGHT:
-            self.playing = False
+            self.player.pos = self.player.startpos
+            self.player.vel = vec(0,0)
 
         if hits_2 and self.player_2.vel.y >= 0:
             self.player_2.pos.y = hits_2[0].rect.top + 1
             self.player_2.vel.y = 0
         if self.player_2.rect.bottom > HEIGHT:
-            self.playing = False
-        
-        if pcollide:
-            print(pcollide)
+            self.player_2.pos = self.player_2.startpos
+            self.player_2.vel = vec(0,0)
 
-        #Update game
+        if pcollide:
+            if self.tag1 == True and self.tag2 == False:
+                if self.ntt == 0:
+                    self.tag1 = False
+                    self.tag2 = True
+                    if self.ntt == 0:
+                        self.ntt += 5
+                    print(str(self.ntt))
+            elif self.tag2 == True and self.tag1 == False:
+                if self.ntt == 0:
+                    self.tag1 = True
+                    self.tag2 = False
+                    if self.ntt == 0:
+                        self.ntt += 5
+                    print(str(self.ntt))
+        if self.tag1 == True:
+            self.player.image.fill(BLACK)
+            self.player.acc = 1
+        if self.tag2 == True:
+            self.player_2.image.fill(REDDISH)
+            self.player_2.acc = 1
+        if self.tag1 == False:
+            self.player.image.fill(THANOS)
+            self.player.acc = 0.5
+        if self.tag2 == False:
+            self.player_2.image.fill(WHITE)
+            self.player_2.acc = 0.5
+        print(str(self.ntt))
+        #Update game 
     def events(self):
         for event in pg.event.get():
             if event.type == pg.QUIT:
