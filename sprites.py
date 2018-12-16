@@ -28,35 +28,37 @@ class Player(pg.sprite.Sprite):
         self.up = pg.K_UP
         
     def update(self):
+        #This is left and right controls.
         self.acc = vec(0, 0.5)
         keys = pg.key.get_pressed()
         if keys[self.left]:
             self.acc.x = -0.5
         if keys[self.right]:
             self.acc.x = 0.5
-
+        #This is the physics of slding and friction.
         self.acc.x += self.vel.x * p_fric
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
-
+        #Screen Wrapping
         if self.pos.x > WIDTH:
             self.pos.x = 0
         if self.pos.x < 0:
             self.pos.x = WIDTH
-
+        #Setting the position of player location.
         self.rect.midbottom = self.pos
 
-
+    #Jump definition.
     def jump(self):
         self.rect.x += 1
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
         self.rect.x -= 1
         if hits:
             self.vel.y = -15
-    
+# Setting the class for the platforms defining the location width, and length.
 class Platform(Sprite):
     def __init__(self, x, y, w, h):
         pg.sprite.Sprite.__init__(self)
+        #Loading image for platforms.
         self.plat_img = pg.image.load(path.join(img, "shromp.gif"))
         self.image = pg.Surface((w, h))
         self.image = self.plat_img
